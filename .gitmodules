@@ -1,0 +1,27 @@
+[submodule "manifestly"]
+	path = manifestly
+	url = https://github.com/openstax/manifestly
+[submodule "tutor-server"]
+	path = tutor-server
+	url = https://github.com/openstax/tutor-server
+[submodule "tutor-js"]
+	path = tutor-js
+	url = https://github.com/openstax/tutor-js
+[submodule "accounts"]
+	path = accounts
+	url = https://github.com/openstax/accounts
+[submodule "exercises"]
+	path = exercises
+	url = https://github.com/openstax/exercises
+[submodule "ux"]
+	path = ux
+	url = https://github.com/openstax/ux
+[submodule "pattern-library"]
+	path = pattern-library
+	url = https://github.com/openstax/pattern-library
+[submodule "os-webview"]
+	path = os-webview
+	url = https://github.com/openstax/os-webview
+[submodule "openstax-cms"]
+	path = openstax-cms
+	url = https://github.com/openstax/openstax-cms
