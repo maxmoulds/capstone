@@ -8,11 +8,7 @@ git clone https://github.com/Connexions/cnx-archive
 git clone https://github.com/Connexions/cnx-recipes
 git clone https://github.com/Connexions/webview
 
-#  sudo apt-get install python-pip python-dev build-essential
-# apt-get install vim libxml2-utils
-# sudo apt-get install nginx postgresql postgresql-client postgresql-contrib libpq-dev nodejs nodejs-legacy rbenv ruby-build virtualenv git graphwiz redis-server qt5-default libqt5webkit5-dev python3 pip3 git-core curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev python-software-properties libffi-dev
-# sudo apt-get install docker.io docker-compose postgresql-9.6 postgresql-server-dev-9.6 postgresql-client-9.6 postgresql-contrib-9.6 postgresql-plpython-9.6
-# apt-get install libxml2-dev libxslt-dev
+# sudo apt-get install docker.io docker-compose postgresql-9.6 postgresql-server-dev-9.6 postgresql-client-9.6 postgresql-contrib-9.6 postgresql-plpython-9.6 libxml2-dev libxslt-dev vim python-pip python-dev build-essential memcached screen libxml2-utils nginx postgresql postgresql-client postgresql-contrib libpq-dev nodejs nodejs-legacy rbenv ruby-build virtualenv git graphwiz redis-server qt5-default libqt5webkit5-dev python3 pip3 git-core curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev python-software-properties libffi-dev
 # nvm
 # gem install bundler 
 
