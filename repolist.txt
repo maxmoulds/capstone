@@ -1,0 +1,11 @@
+git clone https://github.com/openstax/tutor-server
+git clone https://github.com/openstax/tutor-js
+git clone https://github.com/openstax/os-webview
+git clone https://github.com/openstax/pattern-library
+
+# sudo apt-get install postgresql postgresql-client postgresql-contrib libpq-dev nodejs nodejs-legacy rbenv ruby-build virtualenv git graphwiz redis-server qt5-default libqt5webkit5-dev python3 pip3 git-core curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev python-software-properties libffi-dev
+# nvm
+# gem install bundler 
+
+
+# gem install scss_lint
