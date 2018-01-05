@@ -23,16 +23,20 @@ init_environment="0"
 #logvv "Test"
 
 function main() {
-  #log "2nd Test"
-  #logv "inter test"
-  #logvv "inter-intra test"
-  #input_parse "$@"
-  #alert "You suck"
-  #ext_log "This would be output to a log sys specified"
-  #trace "- someday"
+  #install_environment_ubuntu
+  #clone_repos
+
+  #postgres_install_ubuntu
+  #redis_install_ubuntu
+  #postgres_config_boxsand
+  #redis_config_boxsand
+
+  log "INSTALL/CONFIG tutor-server..."
   cd tutor-server
-  tutor_server_install
+  #tutor_server_install
   tutor_server_config
+
+  log "DONE?...$?..."
 }
 
 function install_environment_ubuntu() {
@@ -48,7 +52,7 @@ function install_environment_ubuntu() {
       python-pip git-core curl zlib1g-dev build-essential libssl-dev \
       libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev \
       libxslt1-dev libcurl4-openssl-dev python-software-properties \
-      libffi-dev
+      ruby-dev libffi-dev
 
   fi
 }
@@ -65,22 +69,6 @@ function clone_repos() {
   git clone https://github.com/Connexions/webview
 }
 
-
-##### TUTOR STUFFSSS####
-function tutor_server_install() {
-  log "install tutor_server - boxsand..."
-  #postgres_install_ubuntu
-  #postgres_boxsand_config
-  tutor_rbenv_ruby_install
-
-}
-
-function tutor_server_config() {
-  #tutor server
-  log "changing into tutor-server directory, $PWD"
-  #cd tutor-server
-}
-
 function postgres_install_ubuntu() {
   log "installing postgres ubuntu boxsand..."
   #post grest install 
@@ -89,7 +77,7 @@ function postgres_install_ubuntu() {
   #sudo service postgresql restart
 }
 
-function postgres_boxsand_config() {
+function postgres_config_boxsand() {
   #sudo vim /etc/postgresql/9.6/main/pg_hba.conf
   #change Change peer to md5 or create a new md5 entry for localhost (127.0.0.1).
   sudo service postgresql restart
@@ -109,25 +97,56 @@ function redis_install_ubuntu() {
   #sudo apt-get install redis-server
 }
 
-function redis_config() {
+function redis_config_boxsand() {
   log "config redis..."
+}
+
+
+##### TUTOR STUFFSSS####
+function tutor_server_install() {
+  log "install tutor_server - boxsand..."
+  postgres_install_ubuntu
+  postgres_boxsand_config
+  tutor_rbenv_ruby_install
+
+}
+
+function tutor_server_config() {
+  #tutor server
+  log "changing into tutor-server directory, $PWD"
+  #cd tutor-server
+  tutor_bundler_install
+  tutor_setup_dbs
+  tutor_start_server
+
 }
 
 function tutor_rbenv_ruby_install() {
   log "setup ruby..."
+  #check that this works?
+  #cd ~/.rbenv && src/configure && make -C src
+  #doubt it. source only 
   log "in the directory (should be tutor-server repo) : $PWD"
   export RUBY_CONFIGURE_OPTS=--disable-install-doc
   CONFIGURE_OPTS="--disable-install-rdoc" rbenv install 2.2.3
   #or -- RUBY_CONFIGURE_OPTS=--disable-install-doc [rbenv...]
   source ~/.bashrc && source ~/.profile
+  rbenv init
+  grep -q -F 'export PATH="$HOME/.rbenv/bin:$PATH"' ~/.bashrc || echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
+  source ~/.bashrc && source ~/.profile
+  grep -q -F 'eval "$(rbenv init -)"' ~/.bashrc || echo 'eval "$(rbenv init -)"' >> ~/.bashrc 
+  source ~/.bashrc && source ~/.profile
+
 }
 
 function tutor_bundler_install() {
   log "gem install bundler..."
-  #gem install bundler
+  #sudo gem install bundler
+  rbenv rehash
+  log "wtf mate"
   #source ~/.bashrc && source ~/.profile
   log "bundle install..."
-  #bundle install
+  bundle install --path vendor/bundle
 }
 
 function tutor_setup_dbs() {
