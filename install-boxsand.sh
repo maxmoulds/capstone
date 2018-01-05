@@ -55,27 +55,34 @@ cd tutor-server
 sudo service postgresql restart
 #create psogres user for the app
 log "entering postgres"
+log "type -- createuser --superuser --pwprompt ox_tutor -- when prompted,"
+log "then type the password, then exit... grrr"
 sudo -u postgres -i
-createuser --superuser --pwprompt ox_tutor
-exit
+#createuser --superuser --pwprompt ox_tutor
+#exit
 log "left posgrest?"
 sudo service postgresql restart
 #install redis
 #sudo apt-get install redis-server
 
 
-#setup ruby
+logv "setup ruby..."
 rbenv install 2.2.3
 source ~/.bashrc && source ~/.profile
+
+log "gem install bundler..."
 #gem install bundler
 #source ~/.bashrc && source ~/.profile
+log "bundle install..."
 #bundle install
 
-#setup dbs
+
+log "setup dbs..."
 #bin/rake db:setup
 #bin/rake db:reset
 #bin/rake db:drop db:create db:migrate db:seed
 
+log "start tutor-server..."
 #start tutor-server, bound to https://localhost:3001
 #bin/rails s
 #console tutor-server
@@ -104,14 +111,14 @@ __BACK_RED='\033[41m'
 
 #this is the error function. Indicates a problem which no logic
 #has been written to handle
-function log () {
+function err () {
 if [[ $_V -ge 0 ]]; then
   echo -e "${__RED}[ERR]${__NC}  ${BASH_SOURCE##*/}:${FUNCNAME[1]}:${BASH_LINENO[0]}: $@" >&2
 fi
     }
 #this is the warn function. Indicates a irregularity that has been either
 #ignored or rectified. 
-    function logv () {
+    function warn () {
     if [[ $_V -ge 1 ]]; then
       echo -e "${__YEL}[WARN]${__NC} ${BASH_SOURCE##*/}:${FUNCNAME[1]}:${BASH_LINENO[0]}: $@" >&2
     fi
@@ -119,7 +126,7 @@ fi
 #this is a info function. Gives terminal notice to the "user". Intended to be 
 #redirected to the same file as warn and err, but is not nearly
 #as verbose as ext_log (not even close) think of log as being cheap traces
-  function logvv () {
+  function log () {
   if [[ $_V -ge 2 ]]; then
     echo -e "${__GRN}[INFO]${__NC} ${BASH_SOURCE##*/}:${FUNCNAME[1]}:${BASH_LINENO[0]}: $@" >&2
   fi
