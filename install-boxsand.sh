@@ -19,7 +19,7 @@ set -e
 _V=2
 cwd=$(pwd)
 #log "CWD = $cwd, or .. $(pwd)"
-init_environment="0"
+init_environment="1"
 rbenv_repo="https://github.com/rbenv/rbenv.git"
 ruby_build_repo="https://github.com/rbenv/ruby-build.git"
 ruby_version="2.2.3"
@@ -31,15 +31,15 @@ ruby_version2="2.4.2"
 
 function main() {
   log "CWD = $cwd, or .. $(pwd)"
-  #install_environment_ubuntu
-  #clone_repos
+  install_environment_ubuntu
+  clone_repos
   rbenv_install_ubuntu
   ruby-build_install_ubuntu
   log "ruby ish done?.."
-  #postgres_install_ubuntu
-  #redis_install_ubuntu
-  #postgresboxsand_config
-  #redis_boxsand_config
+  postgres_install_ubuntu
+  redis_install_ubuntu
+  postgresboxsand_config
+  redis_boxsand_config
 
   log "INSTALL/CONFIG tutor-server..."
   tutor_server_install
