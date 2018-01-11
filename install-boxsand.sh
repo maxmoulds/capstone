@@ -17,25 +17,32 @@
 set -e
 
 _V=2
+cwd=$(pwd)
+#log "CWD = $cwd, or .. $(pwd)"
 init_environment="0"
-
+rbenv_repo="https://github.com/rbenv/rbenv.git"
+ruby_build_repo="https://github.com/rbenv/ruby-build.git"
+ruby_version="2.2.3"
+ruby_version2="2.4.2"
 #this var is weird. i need a way to get back home. work out later.
 #_SRC_DIR=.
 #source $_SRC_DIR/src-log.sh
 #logvv "Test"
 
 function main() {
+  log "CWD = $cwd, or .. $(pwd)"
   #install_environment_ubuntu
   #clone_repos
-
+  rbenv_install_ubuntu
+  ruby-build_install_ubuntu
+  log "ruby ish done?.."
   #postgres_install_ubuntu
   #redis_install_ubuntu
   #postgresboxsand_config
   #redis_boxsand_config
 
   log "INSTALL/CONFIG tutor-server..."
-  cd tutor-server
-  #tutor_server_install
+  tutor_server_install
   tutor_server_config
 
   log "DONE?...$?..."
@@ -49,14 +56,14 @@ function install_environment_ubuntu() {
       ansible npm libxml2-dev libxslt-dev \
       vim python-pip python-dev build-essential memcached screen \
       libxml2-utils nginx postgresql postgresql-client \
-      postgresql-contrib libpq-dev nodejs rbenv ruby-build virtualenv \
+      postgresql-contrib libpq-dev nodejs virtualenv \
       git graphviz redis-server qt5-default libqt5webkit5-dev python3 \
       python-pip git-core curl zlib1g-dev build-essential libssl-dev \
       libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev \
       libxslt1-dev libcurl4-openssl-dev python-software-properties \
       ruby-dev libffi-dev libevent-dev python-virtualenv \
       htop
-
+#     rbenv ruby-build
   fi
   #also need nvm...
   #curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | bash
@@ -84,12 +91,54 @@ function clone_repos() {
   git clone https://github.com/openstax/hypothesis-server.git
 }
 
+function rbenv_install_ubuntu() {
+  log "installing rbenv..."
+  if cd ~/.rbenv; then git pull; else git clone "$rbenv_repo" ~/.rbenv; fi
+  #git clone "$rbenv_repo" ~/.rbenv
+  cd ~/.rbenv && src/configure && make -C src
+  #grep -q -F 'export PATH="$HOME/.rbenv/bin:$PATH"' ~/.bash_profile || echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >>  ~/.bash_profile
+  grep -q -F 'export PATH="$HOME/.rbenv/bin:$PATH"' ~/.bashrc || echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
+  dedup_path
+  log "do what follows..."
+  #bash ~/.rbenv/bin/rbenv init
+  log "breakpoints?..."
+  grep -q -F 'eval "$(rbenv init -)"' ~/.bashrc || echo 'eval "$(rbenv init -)"' >> ~/.bashrc
+  #source ~/.bashrc
+  #exec bash
+  hash -r
+  #source ~/.bashrc
+  log "checking install with rbenv-doctor..."
+  curl -fsSL https://github.com/rbenv/rbenv-installer/raw/master/bin/rbenv-doctor | bash
+  log "done with rbenv install.."
+  #. ~/.bashrc
+  log "which ruby? = $(which rbenv)..." 
+  cd "$cwd"
+  log "in cwd = $cwd... $pwd..."
+}
+
+function ruby-build_install_ubuntu() {
+  log "installing ruby-build as a plugin too..."
+  mkdir -p "$(rbenv root)"/plugins
+  if cd "$(rbenv root)"/plugins/ruby-build; then git pull; else git clone "$ruby_build_repo" "$(rbenv root)"/plugins/ruby-build; fi
+  #source ~/.bashrc
+  log "done installing ruby-build as a plugin"
+
+  #log "installing ruby-build as a standalone?"
+  #cd "$cwd"
+  #if cd "$cwd"/ruby-build; then git pull; else git clone https://github.com/rbenv/ruby-build.git; fi
+  #PREFIX=/usr/local ./ruby-build/install.sh
+  #log "done installing ruby-build as a standalone..."
+  #source ~/.bashrc
+  cd "$cwd"
+}
+
 function postgres_install_ubuntu() {
   log "installing postgres ubuntu boxsand..."
   #post grest install 
   # sudo apt-get install postgresql postgresql-client postgresql-contrib libpq-dev
   # brew install postgres
   #sudo service postgresql restart
+  cd "$cwd"
 }
 
 function postgres_boxsand_config() {
@@ -120,8 +169,8 @@ function redis_boxsand_config() {
 ##### TUTOR STUFFSSS####
 function tutor_server_install() {
   log "install tutor_server - boxsand..."
-  postgres_install_ubuntu
-  postgres_boxsand_config
+  #postgres_install_ubuntu
+  #postgres_boxsand_config
   tutor_rbenv_ruby_install
 
 }
@@ -138,23 +187,29 @@ function tutor_server_config() {
 
 function tutor_rbenv_ruby_install() {
   log "setup ruby..."
+  cd "$cwd"
+  cd ./tutor-server
   #check that this works?
   #cd ~/.rbenv && src/configure && make -C src
   #doubt it. source only 
   log "in the directory (should be tutor-server repo) : $PWD"
   export RUBY_CONFIGURE_OPTS=--disable-install-doc
-  CONFIGURE_OPTS="--disable-install-rdoc" rbenv install 2.2.3
+  CONFIGURE_OPTS="--disable-install-rdoc" rbenv install "$ruby_version" #2.2.3
+  CONFIGURE_OPTS="--disable-install-rdoc" rbenv install "$ruby_version2"
   #or -- RUBY_CONFIGURE_OPTS=--disable-install-doc [rbenv...]
-  source ~/.bashrc && source ~/.profile
+  #seeurce ~/.bashrc && source ~/.profile
   rbenv init
   grep -q -F 'export PATH="$HOME/.rbenv/bin:$PATH"' ~/.bashrc || echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
-  source ~/.bashrc && source ~/.profile
+  #source ~/.bashrc && source ~/.profile
   grep -q -F 'eval "$(rbenv init -)"' ~/.bashrc || echo 'eval "$(rbenv init -)"' >> ~/.bashrc 
-  source ~/.bashrc && source ~/.profile
+  #source ~/.bashrc && source ~/.profile
+  log "done installing ruby.... yaay...."
 
 }
 
 function tutor_bundler_install() {
+  cd "$cwd"
+  cd ./tutor-server
   log "gem install bundler..."
   #sudo gem install bundler
   rbenv rehash
@@ -162,6 +217,7 @@ function tutor_bundler_install() {
   #source ~/.bashrc && source ~/.profile
   log "bundle install..."
   bundle install --path vendor/bundle
+  cd "$cwd"
 }
 
 function tutor_setup_dbs() {
@@ -315,6 +371,27 @@ function ext_log () {
 #the developer.
 function trace () {
   echo -e "[TRACE] ${BASH_SOURCE##*/}:${FUNCNAME[1]}:${BASH_LINENO[0]}: Currently Unsupported $@" >&2
+}
+function dedup_path() {
+  #  for x in /path/to/add …; do
+  #    case ":$PATH:" in
+  #      *":$x:"*) :;; # already there
+  #      *) PATH="$x:$PATH";;
+  #    esac
+  #  done
+  if [ -n "$PATH" ]; then
+    old_PATH=$PATH:; PATH=
+    while [ -n "$old_PATH" ]; do
+      x=${old_PATH%%:*}       # the first remaining entry
+      case $PATH: in
+        *:"$x":*) ;;         # already there
+        *) PATH=$PATH:$x;;    # not there yet
+      esac
+      old_PATH=${old_PATH#*:}
+    done
+    PATH=${PATH#:}
+    unset old_PATH x
+  fi
 }
 #end
 
