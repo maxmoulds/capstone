@@ -12,6 +12,8 @@
 # 10) split install script (this) into sep files (ifp)
 # 11) cmake, make, brew, crew, grrr...
 
+# -- var the dev env. 
+
 set -e
 
 _V=2
@@ -28,8 +30,8 @@ function main() {
 
   #postgres_install_ubuntu
   #redis_install_ubuntu
-  #postgres_config_boxsand
-  #redis_config_boxsand
+  #postgresboxsand_config
+  #redis_boxsand_config
 
   log "INSTALL/CONFIG tutor-server..."
   cd tutor-server
@@ -44,7 +46,7 @@ function install_environment_ubuntu() {
   then
     sudo apt-get install docker.io docker-compose \
       postgresql-9.6 postgresql-server-dev-9.6 postgresql-client-9.6 postgresql-contrib-9.6 postgresql-plpython-9.6 \
-      libxml2-dev libxslt-dev \
+      ansible npm libxml2-dev libxslt-dev \
       vim python-pip python-dev build-essential memcached screen \
       libxml2-utils nginx postgresql postgresql-client \
       postgresql-contrib libpq-dev nodejs rbenv ruby-build virtualenv \
@@ -52,9 +54,17 @@ function install_environment_ubuntu() {
       python-pip git-core curl zlib1g-dev build-essential libssl-dev \
       libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev \
       libxslt1-dev libcurl4-openssl-dev python-software-properties \
-      ruby-dev libffi-dev
+      ruby-dev libffi-dev libevent-dev python-virtualenv \
+      htop
 
   fi
+  #also need nvm...
+  #curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | bash
+  #source ~/.bashrc 
+  #nvm install -v6.2
+
+  #yarn
+
 }
 
 function clone_repos() {
@@ -63,10 +73,15 @@ function clone_repos() {
   git clone https://github.com/openstax/os-webview
   git clone https://github.com/openstax/pattern-library
   git clone https://github.com/openstax/exercises
+  #git clone https://github.com/openstax/exercises-js.git
   git clone https://github.com/Connexions/cnx-db
   git clone https://github.com/Connexions/cnx-archive
   git clone https://github.com/Connexions/cnx-recipes
-  git clone https://github.com/Connexions/webview
+  git clone https://github.com/Connexions/cnx-deploy.git
+  #git clone https://github.com/Connexions/webview
+  git clone https://github.com/openstax/accounts.git
+  git clone https://github.com/openstax/hypothesis-deployment.git
+  git clone https://github.com/openstax/hypothesis-server.git
 }
 
 function postgres_install_ubuntu() {
@@ -77,7 +92,7 @@ function postgres_install_ubuntu() {
   #sudo service postgresql restart
 }
 
-function postgres_config_boxsand() {
+function postgres_boxsand_config() {
   #sudo vim /etc/postgresql/9.6/main/pg_hba.conf
   #change Change peer to md5 or create a new md5 entry for localhost (127.0.0.1).
   sudo service postgresql restart
@@ -97,7 +112,7 @@ function redis_install_ubuntu() {
   #sudo apt-get install redis-server
 }
 
-function redis_config_boxsand() {
+function redis_boxsand_config() {
   log "config redis..."
 }
 
@@ -164,6 +179,95 @@ function tutor_start_server() {
   #bin/rails c
   ########################END TUTOR###################
 }
+
+###################ACCOUNTS STUFFSSS###################
+function install_accounts()
+{
+  log "install(ha) accounts..."
+  cd ~/accounts
+  log "in accounts -- $(PWD)"
+  log "enter password for ox_tutor when prompted:"
+  bundle install --without production
+  log "done with bundler install..."
+}
+
+function accounts_boxsand_config() 
+{
+  log "config boxsand accounts..."
+  log "must be in accounts dir == $(PWD)"
+  rake db:migrate
+  rake db:seed
+}
+
+function accounts_start() 
+{
+  log "starting accounts..."
+  log "must be in accounts dir == $(PWD)"
+  rails server
+  log "done running accounts (why? idk)"
+}
+###### END ACCOUNTS #####
+
+############ ASSESSMENTS / EXERCISES / QUADBASE ##########
+
+function exercises_install()
+{
+  log "install(ing) exercies...."
+  cd ../exercises
+  log "needs to be in the exercises dir === $(PWD)"
+  bundle --without production
+  log "installed ?"
+}
+
+function exercises_boxsand_config()
+{
+  log "configuring exercises for boxsand..."
+  log "need to be in exercises dir... $(PWD)..."
+  rake db:migrate
+  rake db:seed
+  log "done config exercises"
+}
+
+function exercises_start()
+{
+  log "starting exercises..."
+  log "need to be in the exercises dir == $(PWD)"
+  rails s
+  log "finished sharting exercises..."
+}
+
+####### DONE EXERCISES ######
+
+###### HYPOTHESIS ######
+function install_hypothesis() 
+{
+  log "install hypothesis..."
+  log "need be in hypoth ... $(PWD)"
+  cd ../hypothesis-server
+  sudo -H pip install -U pip virtualenv
+  sudo npm install -g npm
+  log "this next command may not work...${USER} is my user should by oxtutor"
+  sudo usermod -aG docker ${USER}
+
+  sudo service docker start
+  docker-compose up
+  sudo npm install -g gulp-cli
+
+  virtualenv .venv
+  source .venv/bin/activate
+
+  # docker stop $(docker ps -a -q); docker rm $(docker ps -a -q); docker volume rm $(docker volume ls -qf dangling=true)
+  # docker network rm $(docker network ls -q)
+  # sudo lsof -nP | grep LISTEN
+  # # kill the pid blocking the port 
+  # sudo kill -9 1548
+
+  make dev
+
+
+  log "done with hypothesis..."
+}
+
 
 #end main...
 
