@@ -63,7 +63,7 @@ function install_environment_ubuntu() {
       libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev \
       libxslt1-dev libcurl4-openssl-dev python-software-properties \
       ruby-dev libffi-dev libevent-dev python-virtualenv \
-      htop
+      gcc-5 htop
 #     rbenv ruby-build
   fi
   #also need nvm...
@@ -244,7 +244,10 @@ function install_accounts()
   cd ~/accounts
   log "in accounts -- $(PWD)"
   log "enter password for ox_tutor when prompted:"
-  rbenv install $ruby_version_accounts #2.3.3
+  CC=/usr/bin/gcc-5 \
+    PKG_CONFIG_PATH=/usr/lib/openssl-1.0/pkgconfig \
+    rbenv install $ruby_version_accounts #2.3.3
+  #rbenv install $ruby_version_accounts #2.3.3
   bundle install --without production
   log "done with bundler install..."
 }
