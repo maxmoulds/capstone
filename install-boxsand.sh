@@ -248,6 +248,9 @@ function install_accounts()
     PKG_CONFIG_PATH=/usr/lib/openssl-1.0/pkgconfig \
     rbenv install $ruby_version_accounts #2.3.3
   #rbenv install $ruby_version_accounts #2.3.3
+  log "need to update bundler (maybe)..."
+  gem install bundler
+  rbenv rehash
   bundle install --without production
   log "done with bundler install..."
 }
