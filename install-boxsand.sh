@@ -24,6 +24,7 @@ rbenv_repo="https://github.com/rbenv/rbenv.git"
 ruby_build_repo="https://github.com/rbenv/ruby-build.git"
 ruby_version="2.2.3"
 ruby_version2="2.4.2"
+ruby_version_accounts="2.3.3" #AHHHHH
 #this var is weird. i need a way to get back home. work out later.
 #_SRC_DIR=.
 #source $_SRC_DIR/src-log.sh
@@ -31,18 +32,18 @@ ruby_version2="2.4.2"
 
 function main() {
   log "CWD = $cwd, or .. $(pwd)"
-  install_environment_ubuntu
-  clone_repos
+  #install_environment_ubuntu
+  #clone_repos
   rbenv_install_ubuntu
   ruby-build_install_ubuntu
   log "ruby ish done?.."
-  postgres_install_ubuntu
-  redis_install_ubuntu
-  postgresboxsand_config
-  redis_boxsand_config
+  #postgres_install_ubuntu
+  #redis_install_ubuntu
+  #postgres_boxsand_config
+  #redis_boxsand_config
 
   log "INSTALL/CONFIG tutor-server..."
-  tutor_server_install
+  #tutor_server_install
   tutor_server_config
 
   log "DONE?...$?..."
@@ -85,7 +86,7 @@ function clone_repos() {
   git clone https://github.com/Connexions/cnx-archive
   git clone https://github.com/Connexions/cnx-recipes
   git clone https://github.com/Connexions/cnx-deploy.git
-  #git clone https://github.com/Connexions/webview
+  git clone https://github.com/Connexions/webview
   git clone https://github.com/openstax/accounts.git
   git clone https://github.com/openstax/hypothesis-deployment.git
   git clone https://github.com/openstax/hypothesis-server.git
@@ -211,7 +212,7 @@ function tutor_bundler_install() {
   cd "$cwd"
   cd ./tutor-server
   log "gem install bundler..."
-  #sudo gem install bundler
+  sudo gem install bundler
   rbenv rehash
   log "wtf mate"
   #source ~/.bashrc && source ~/.profile
@@ -243,6 +244,7 @@ function install_accounts()
   cd ~/accounts
   log "in accounts -- $(PWD)"
   log "enter password for ox_tutor when prompted:"
+  rbenv install $ruby_version_accounts #2.3.3
   bundle install --without production
   log "done with bundler install..."
 }
