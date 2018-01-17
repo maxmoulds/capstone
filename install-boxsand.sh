@@ -34,8 +34,8 @@ function main() {
   log "CWD = $cwd, or .. $(pwd)"
   #install_environment_ubuntu
   #clone_repos
-  rbenv_install_ubuntu
-  ruby-build_install_ubuntu
+  #rbenv_install_ubuntu
+  #ruby-build_install_ubuntu
   log "ruby ish done?.."
   #postgres_install_ubuntu
   #redis_install_ubuntu
@@ -44,7 +44,7 @@ function main() {
 
   log "INSTALL/CONFIG tutor-server..."
   #tutor_server_install
-  tutor_server_config
+  #tutor_server_config
 
   log "DONE?...$?..."
 }
@@ -63,7 +63,8 @@ function install_environment_ubuntu() {
       libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev \
       libxslt1-dev libcurl4-openssl-dev python-software-properties \
       ruby-dev libffi-dev libevent-dev python-virtualenv \
-      gcc-5 htop
+      gcc-5 htop \
+
 #     rbenv ruby-build
   fi
   #also need nvm...
@@ -81,7 +82,7 @@ function clone_repos() {
   git clone https://github.com/openstax/os-webview
   git clone https://github.com/openstax/pattern-library
   git clone https://github.com/openstax/exercises
-  #git clone https://github.com/openstax/exercises-js.git
+  git clone https://github.com/openstax/exercises-js.git
   git clone https://github.com/Connexions/cnx-db
   git clone https://github.com/Connexions/cnx-archive
   git clone https://github.com/Connexions/cnx-recipes
@@ -90,6 +91,7 @@ function clone_repos() {
   git clone https://github.com/openstax/accounts.git
   git clone https://github.com/openstax/hypothesis-deployment.git
   git clone https://github.com/openstax/hypothesis-server.git
+  git clone https://github.com/openstax/hypothesis-client.git
 }
 
 function rbenv_install_ubuntu() {
@@ -212,7 +214,7 @@ function tutor_bundler_install() {
   cd "$cwd"
   cd ./tutor-server
   log "gem install bundler..."
-  sudo gem install bundler
+  gem install bundler
   rbenv rehash
   log "wtf mate"
   #source ~/.bashrc && source ~/.profile
