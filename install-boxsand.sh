@@ -197,8 +197,10 @@ function tutor_rbenv_ruby_install() {
   #doubt it. source only 
   log "in the directory (should be tutor-server repo) : $PWD"
   export RUBY_CONFIGURE_OPTS=--disable-install-doc
-  CONFIGURE_OPTS="--disable-install-rdoc" rbenv install "$ruby_version" #2.2.3
-  CONFIGURE_OPTS="--disable-install-rdoc" rbenv install "$ruby_version2"
+  CC=/usr/bin/gcc-5 \
+  PKG_CONFIG_PATH=/usr/lib/openssl-1.0/pkgconfig \
+  CONFIGURE_OPTS="--disable-install-rdoc" rbenv install "$ruby_version2" #2.2.3
+  CONFIGURE_OPTS="--disable-install-rdoc" rbenv install "$ruby_version"
   #or -- RUBY_CONFIGURE_OPTS=--disable-install-doc [rbenv...]
   #seeurce ~/.bashrc && source ~/.profile
   rbenv init
