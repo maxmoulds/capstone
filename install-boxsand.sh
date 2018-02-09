@@ -32,19 +32,19 @@ ruby_version_accounts="2.3.3" #AHHHHH
 
 function main() {
   log "CWD = $cwd, or .. $(pwd)"
-  #install_environment_ubuntu
+  install_environment_ubuntu
   #clone_repos
-  #rbenv_install_ubuntu
-  #ruby-build_install_ubuntu
+  rbenv_install_ubuntu
+  ruby-build_install_ubuntu
   log "ruby ish done?.."
-  #postgres_install_ubuntu
-  #redis_install_ubuntu
-  #postgres_boxsand_config
-  #redis_boxsand_config
+  postgres_install_ubuntu
+  redis_install_ubuntu
+  postgres_boxsand_config
+  redis_boxsand_config
 
   log "INSTALL/CONFIG tutor-server..."
-  #tutor_server_install
-  #tutor_server_config
+  tutor_server_install
+  tutor_server_config
 
   log "DONE?...$?..."
 }
@@ -56,7 +56,7 @@ function install_environment_ubuntu() {
       postgresql-9.6 postgresql-server-dev-9.6 postgresql-client-9.6 postgresql-contrib-9.6 postgresql-plpython-9.6 \
       ansible npm libxml2-dev libxslt-dev \
       vim python-pip python-dev build-essential memcached screen \
-      libxml2-utils nginx postgresql postgresql-client \
+      libxml2-utils nginx postgresql-client \
       postgresql-contrib libpq-dev nodejs virtualenv \
       git graphviz redis-server qt5-default libqt5webkit5-dev python3 \
       python-pip git-core curl zlib1g-dev build-essential libssl-dev \
