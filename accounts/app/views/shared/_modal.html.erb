@@ -1,0 +1,21 @@
+<%
+  html_id ||= 'dialog'
+  height ||= '500px'
+%>
+
+<div id="<%= html_id %>"
+     class="modal"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="not-labelled"
+     aria-hidden="true">
+
+  <div class="modal-dialog">
+    <div class="modal-content" style="min-height: <%= height %>">
+
+      <%= body %>
+
+    </div>
+  </div>
+
+</div>

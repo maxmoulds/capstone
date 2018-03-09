@@ -1,0 +1,113 @@
+// Copyright 2011-2013 Rice University. Licensed under the Affero General Public
+// License version 3 or later.  See the COPYRIGHT file for details.
+
+@import "common";
+
+#application-body-api-docs {
+
+  background-color: white;
+  padding: 0 40px 30px 40px;
+
+  ul, ol {
+    margin-left: 25px;
+  }
+
+  blockquote p {
+    font-size: 12px;
+  }
+
+  .breadcrumb {
+    // padding: 0 0 10px 0;
+    // margin: 0;
+    // background-color: transparent;
+    // float:right;
+    // text-align: right;
+    width: 100%;
+    margin-left: -40px;
+    margin-right: -40px;
+  }
+
+  ul.breadcrumb {
+
+    // undoes the "/" provided by apipie's default CSS
+    li + li:before {
+      content: none;
+      padding: 0;
+    }
+  }
+
+  h1.page-header {
+    font-size: 22px;
+    line-height: 24px;
+    margin-bottom: 12px;
+  }
+
+  h2.schema {
+    clear: both;
+  }
+
+  .page-header {
+    clear:both;
+    h1 {
+      font-size: 20px;
+      line-height: 24px;
+
+
+      small {
+        float: left;
+        margin-top:20px;
+        font-size: 16px;
+        line-height: 22px;
+        margin-bottom: 15px;
+      }
+    }
+
+    margin-top:30px;
+    border-bottom: none;
+  }
+
+
+
+  #description-create {
+    p {
+      margin-top:0;
+    }
+  }
+
+  h3 {
+    font-size: 14px;
+  }
+
+  h2, h2 a {
+    font-size: 16px;
+    line-height: 26px;
+    font-weight: bold;
+
+    small {
+      font-size: 14px;
+    }
+  }
+
+  h2 {
+    margin-top: 30px;
+  }
+
+  div p {
+    clear: both;
+  }
+
+  // position: relative;
+
+  // $body_width: 700px;
+  // $nav_width:  $application_master_width - $body_width;
+
+  // #application-body-nav-body {
+  //   float:   left;
+  //   width: $body_width;
+  // }
+
+  // #application-body-nav-nav {
+  //   float:   right;
+  //   width: $nav_width;
+  // }
+}

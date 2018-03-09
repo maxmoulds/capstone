@@ -1,0 +1,19 @@
+<%= ox_card(heading: (t @handler_result.errors.any? ?
+                        :".verification_code_not_found" :
+                        :".thanks_for_validating")) do %>
+
+  <% if @handler_result.outputs.can_log_in %>
+    <%= t :".you_can_now_sign_in.content_html",
+          link: (link_to (t :".you_can_now_sign_in.sign_in"),
+                         signin_url)
+        %>
+  <% else %>
+    <%# TODO replace root_url with right value %>
+    <%= t :".please_sign_up.content_html",
+          link: (link_to (t :".please_sign_up.sign_up"),
+                         root_url),
+          email: @handler_result.outputs.email_address
+        %>
+  <% end %>
+
+<% end %>
