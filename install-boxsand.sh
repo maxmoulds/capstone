@@ -24,7 +24,7 @@ rbenv_repo="https://github.com/rbenv/rbenv.git"
 ruby_build_repo="https://github.com/rbenv/ruby-build.git"
 ruby_version="2.2.3"
 ruby_version2="2.4.2"
-ruby_version_accounts="2.3.3" #AHHHHH
+ruby_version_accounts="2.3.3" #AHHHHH, we will also need 2.3.6...later. 
 #this var is weird. i need a way to get back home. work out later.
 #_SRC_DIR=.
 #source $_SRC_DIR/src-log.sh
@@ -45,7 +45,9 @@ function main() {
   log "INSTALL/CONFIG tutor-server..."
   tutor_server_install
   tutor_server_config
-
+  log "Installing accounts stuff..."
+  install_accounts
+  accounts_boxsand_config
   log "DONE?...$?..."
 }
 
